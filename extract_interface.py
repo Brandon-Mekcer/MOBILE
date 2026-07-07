@@ -1,14 +1,14 @@
 import re
 
 def extract_id(text):
-    pattern = r"(TX[\d]+)"
+    pattern = r"([A-Z0-9]+)\s*Confirmed"
     match = re.search(pattern, text)
     if match:
-        return match.group(0)
+        return match.group(1)
     return None
 
 def extract_amount(text):
-    pattern = r"KES\s*([\d,]+\.\d+)"
+    pattern = r"Ksh\s*([\d,]+\.\d+)"
     match = re.search(pattern, text)
     if match:
         return float(match.group(1).replace(',', ''))
@@ -27,7 +27,7 @@ def parse_sms(text):
     hour = extract_hour(text)
     return transaction_id, amount, hour
 
-sms = "TX1234: Your transaction of KES100.00 has been processed successfully at 14:30. Thank you for using our service."
+sms = "UGD6J903HS Confirmed. Ksh100.00 sent to Kevin Ombati on 7/5/2026 at 12:30 PM. New MPESA balance is Ksh1,500.70. Transaction cost, Ksh7.00."
 # transaction_id = extract_id(sms)
 # print("Extracted Transaction ID:", transaction_id)
 
