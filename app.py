@@ -109,6 +109,10 @@ label, .stTextInput label, .stNumberInput label {
 
 st.title("Mobile Money Fraud Detection")
 
+st.write("This application predicts whether a mobile money transaction is legitimate, suspicious, or fraudulent based on the transaction details provided.")
+
+st.warning("Please note that no personal information is collected or stored. The prediction is based solely on the transaction details you provide.")
+
 sms = st.text_input("Paste the transaction message:")
 
 transaction_id, amount, hour = parse_sms(sms)
