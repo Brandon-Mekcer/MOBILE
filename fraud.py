@@ -22,6 +22,19 @@ print(X.shape)
 y = mobdata['transaction_status']
 print(y)
 
+# Plotting the absolute correlation between features and target variable
+for column in X.columns:
+    correlation = abs(X[column].corr(y.map({'Legitimate': 0, 'Suspicious': 1, 'Fraudulent': 2})))
+    print(f"Absolute correlation between {column} and transaction_status: {correlation}")
+
+
+
+# plt.figure(figsize=(10, 8))
+# plt.barh(X.columns, [abs(X[column].corr(y.map({'Legitimate': 0, 'Suspicious': 1, 'Fraudulent': 2}))) for column in X.columns])
+# plt.xlabel("Absolute Correlation with transaction_status")
+# plt.ylabel("Features")
+# plt.title("Feature Correlation with transaction_status")
+# plt.show()
 #Train and test
 X_train,X_test,y_train,y_test = train_test_split(
     X,y, test_size = 0.3,random_state=42,stratify=y)#random state is to ensure data remains consistent.
@@ -42,6 +55,27 @@ print("Accuracy:", accuracy_score(y_test,y_pred))
 # Save the model
 joblib.dump(model, 'Fraud_model.pkl')
 
+# Using ANN model for prediction
+from sklearn.neural_network import MLPClassifier
+ann_model = MLPClassifier(hidden_layer_sizes=(100,), max_iter=300, random_state=42)
+ann_model.fit(X_train, y_train)
+y_pred_ann = ann_model.predict(X_test)
+print("ANN Model Predictions:", y_pred_ann)
+print("ANN Model Accuracy:", accuracy_score(y_test, y_pred_ann))
+
+# Kmeans Clustering
+from sklearn.cluster import KMeans
+kmeans = KMeans(n_clusters=3, random_state=42)
+kmeans.fit(X)
+y_kmeans = kmeans.predict(X)
+
+# Dispaly number of samples in each cluster
+import numpy as np
+unique, counts = np.unique(y_kmeans, return_counts=True)
+print("KMeans Clustering Counts:", dict(zip(unique, counts))) 
+
+print("KMeans Clustering Predictions:", y_kmeans)
+
 
 #Visualize the decision tree
 # plt.figure(figsize=(20,10))
@@ -49,10 +83,10 @@ joblib.dump(model, 'Fraud_model.pkl')
 # plt.title("Decision Tree for Mobile Money Fraud Detection")
 # plt.show()
 
-# # Attribute importance
+# Attribute importance
 # importances = model.feature_importances_
 # # Plot feature importances
-# plt.figure(figsize=(10,6))
+# plt.figure(figsize=(8,6))
 # plt.barh(X.columns, importances)
 # plt.xlabel("Feature Importance")
 # plt.ylabel("Features")

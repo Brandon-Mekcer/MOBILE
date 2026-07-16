@@ -136,9 +136,9 @@ if predict:
 
     # Display the prediction result
     if prediction == 'Fraudulent':
-        st.error("Fraudulent transaction detected!")
+        st.error(f"Transaction ID: {transaction_id} - Fraudulent transaction detected!")
     elif prediction == 'Suspicious':
-        st.warning("Suspicious transaction detected!")
+        st.warning(f"Transaction ID: {transaction_id} - Suspicious transaction detected!")
     else:
-        st.success("Transaction is legitimate.")
+        st.success(f"Transaction ID: {transaction_id} - Transaction is legitimate.")
 
